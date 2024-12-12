@@ -1,7 +1,11 @@
 const heroverseUrl = "https://www.superheroapi.com/api";
 const apiKey = process.env.API_KEY;
 const fetchHeroes = async (req, res) => {
-  const ids = [1, 2, 3, 4, 5, 6, 7, 8];
+  const batch = +req.query.batch || 1;
+  const batchSize = 8;
+  const startId = (batch - 1) * batchSize + 1;
+  const ids = Array.from({ length: batchSize }, (_, i) => startId + i);
+
   const promises = ids.map((id) => {
     return fetch(`${heroverseUrl}/${apiKey}/${id}`).then((response) => response.json());
   });
