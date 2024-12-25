@@ -40,6 +40,7 @@ const fetchHeroById = async (req, res) => {
 };
 
 const fetchRandomHeroes = async (req, res) => {
+  console.log("API Key in production:", process.env.API_KEY);
   const randomNumbers = Array.from({ length: 4 }, () => Math.floor(Math.random() * 731) + 1);
   const promises = randomNumbers.map((randomNumber) => {
     return fetch(`${heroverseUrl}/${apiKey}/${randomNumber}`).then((response) => response.json());
