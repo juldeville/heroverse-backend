@@ -39,4 +39,22 @@ const fetchHeroById = async (req, res) => {
   }
 };
 
-module.exports = { fetchHeroesBatch, fetchHeroById };
+const fetchRandomHeroes = async (req, res) => {
+  const randomNumbers = Array.from({ length: 4 }, () => Math.floor(Math.random() * 731) + 1);
+  const promises = randomNumbers.map((randomNumber) => {
+    return fetch(`${heroverseUrl}/${apiKey}/${randomNumber}`).then((response) => response.json());
+  });
+  try {
+    const randomHeroes = await Promise.all(promises);
+    if (randomHeroes) {
+      res.status(200).json({ result: true, heroes: randomHeroes });
+    } else {
+      res.status(404).json({ result: false, error: "No hero found" });
+    }
+  } catch (err) {
+    console.error("error is:", err.message);
+    res.json({ result: false, error: err.message });
+  }
+};
+
+module.exports = { fetchHeroesBatch, fetchHeroById, fetchRandomHeroes };
